@@ -7,7 +7,7 @@ import requests_mock.exceptions
 
 
 try:
-    import swapi
+    import swapi.swapi as swapi
 except ModuleNotFoundError:
     assert False, "Не найдена домашняя работа"
 
