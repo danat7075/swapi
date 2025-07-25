@@ -1,0 +1,4 @@
+[flake8]
+select = E,F,W,N,V,Q
+max-line-length = 88
+inline-quotes = '
