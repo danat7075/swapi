@@ -20,11 +20,18 @@ class APIRequester:
 
 class SWRequester(APIRequester):
     def get_sw_categories(self):
+        category_dict = {}
         try:
             response = requests.get(self.base_url.rstrip('/') + '/')
             response.raise_for_status()
             categories = response.json()
-            return categories.keys()
+            if 'result' in categories and response.status_code == 200:
+                for category, url in categories['result'].items():
+                    category_dict[category] = url
+                return category_dict.keys()
+            else:
+                print("Ключ 'result' не найден в ответе.")
+                return categories.keys()
         except requests.ConnectionError as e:
             print(f'Произошла ошибка соединения с {self.base_url}')
             print(f'Ошибка соединения: {e}')
