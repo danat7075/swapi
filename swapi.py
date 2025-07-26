@@ -1,5 +1,4 @@
 import requests
-import os
 from pathlib import Path
 
 
@@ -15,32 +14,22 @@ class APIRequester:
         except requests.ConnectionError as e:
             print(f'Произошла ошибка соединения с {self.base_url}')
             print(f'Ошибка соединения: {e}')
-        except requests.RequestException as e:
-            print(f'Возникла ошибка при выполнении запроса')
+        except requests.RequestException:
+            print('Возникла ошибка при выполнении запроса')
 
 
 class SWRequester(APIRequester):
-    def __init__(self, base_url='https://www.swapi.tech/api'):
-        super().__init__(base_url)
-
     def get_sw_categories(self):
-        category_dict = {}
         try:
             response = requests.get(self.base_url.rstrip('/') + '/')
             response.raise_for_status()
             categories = response.json()
-            if 'result' in categories and response.status_code == 200:
-                for category, url in categories['result'].items():
-                    category_dict[category] = url
-            else:
-                print("Ключ 'result' не найден в ответе.")
-            return category_dict.keys()
+            return categories.keys()
         except requests.ConnectionError as e:
             print(f'Произошла ошибка соединения с {self.base_url}')
             print(f'Ошибка соединения: {e}')
-        except requests.RequestException as e:
-            print(f'Возникла ошибка при выполнении запроса')
-
+        except requests.RequestException:
+            print('Возникла ошибка при выполнении запроса')
 
     def get_sw_info(self, sw_type):
         try:
@@ -50,19 +39,17 @@ class SWRequester(APIRequester):
         except requests.ConnectionError as e:
             print(f'Произошла ошибка соединения с {self.base_url}')
             print(f'Ошибка соединения: {e}')
-        except requests.RequestException as e:
-            print(f'Возникла ошибка при выполнении запроса')
+        except requests.RequestException:
+            print('Возникла ошибка при выполнении запроса')
 
 
-def save_sw_data(base_url='https://www.swapi.tech/api'):
-    directory = Path('data') 
+def save_sw_data(base_url='https://swapi.dev/api'):
+    directory = Path('data')
     directory.mkdir(exist_ok=True)
     requester = SWRequester(base_url)
     requester.get_sw_categories()
     for category in requester.get_sw_categories():
-        file_path = os.path.join(str(directory), f'{category}.txt')
+        file_path = f'data/{category}.txt'
         with open(file_path, 'w') as file:
             data = requester.get_sw_info(category)
             file.write(data)
-
-save_sw_data()

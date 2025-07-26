@@ -13,7 +13,7 @@ except ModuleNotFoundError:
 
 init_base_url = [
     {
-        "base_url": "https://swapi.tech/api",
+        "base_url": "https://swapi.dev/api",
         "text": "test text 1",
         "json": {"key1": "v1", "key2": "v2"},
     },
@@ -178,11 +178,11 @@ class TestSaveSWData:
         }, "При создании каталога укажите параметр `exist_ok=True`"
 
         assert _swr_args == (
-            "https://swapi.tech/api",
-        ), 'Передайте один параметр `"https://swapi.tech/api"` при объявлении экземпляра класса `SWRequester` в функции `save_sw_data`'  # noqa
+            "https://swapi.dev/api",
+        ), 'Передайте один параметр `"https://swapi.dev/api"` при объявлении экземпляра класса `SWRequester` в функции `save_sw_data`'  # noqa
         assert (
             _swr_kwargs == {}
-        ), 'Передайте один параметр `"https://swapi.tech/api"` при объявлении экземпляра класса `SWRequester` в функции `save_sw_data`'  # noqa
+        ), 'Передайте один параметр `"https://swapi.dev/api"` при объявлении экземпляра класса `SWRequester` в функции `save_sw_data`'  # noqa
 
         assert _files_ctx == {
             "data/category_1.txt": "test text for category_1",
