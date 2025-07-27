@@ -21,33 +21,21 @@ class APIRequester:
 class SWRequester(APIRequester):
     def get_sw_categories(self):
         category_dict = {}
-        try:
-            response = requests.get(self.base_url.rstrip('/') + '/')
-            response.raise_for_status()
-            categories = response.json()
-            if 'result' in categories and response.status_code == 200:
-                for category, url in categories['result'].items():
-                    category_dict[category] = url
-                return category_dict.keys()
-            else:
-                print("Ключ 'result' не найден в ответе.")
-                return categories.keys()
-        except requests.ConnectionError as e:
-            print(f'Произошла ошибка соединения с {self.base_url}')
-            print(f'Ошибка соединения: {e}')
-        except requests.RequestException:
-            print('Возникла ошибка при выполнении запроса')
+        response = self.get('/')
+        response.raise_for_status()
+        categories = response.json()
+        if 'result' in categories and response.status_code == 200:
+            for category, url in categories['result'].items():
+                category_dict[category] = url
+            return category_dict.keys()
+        else:
+            print("Ключ 'result' не найден в ответе.")
+            return categories.keys()
 
     def get_sw_info(self, sw_type):
-        try:
-            response = requests.get(f'{self.base_url}/{sw_type}/')
-            response.raise_for_status()
-            return response.text
-        except requests.ConnectionError as e:
-            print(f'Произошла ошибка соединения с {self.base_url}')
-            print(f'Ошибка соединения: {e}')
-        except requests.RequestException:
-            print('Возникла ошибка при выполнении запроса')
+        response = self.get(f'/{sw_type}/')
+        response.raise_for_status()
+        return response.text
 
 
 def save_sw_data(base_url='https://swapi.dev/api'):
